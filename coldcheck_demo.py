@@ -12,10 +12,19 @@ PUERTO = os.getenv("COM_PORT", "COM7")
 MAPA = {"VERDE": "G", "AMARILLO": "Y", "ROJO": "R"}
 
 SYSTEM = ("Eres un asistente de apoyo para decidir si un producto refrigerado sigue siendo usable "
-          "tras una excursión de temperatura. Responde en español con: VEREDICTO: (VERDE/AMARILLO/ROJO), "
-          "razones breves citando las fuentes como [n], y la incertidumbre que queda. Usa SOLO las fuentes "
-          "dadas para las cifras; si no cubren el caso, dilo. Ante la duda, elige el veredicto más "
-          "conservador. No eres un dispositivo médico.")
+          "tras una excursión de temperatura. No eres un dispositivo médico. Reglas:\n"
+          "1. Usa SOLO las fuentes dadas. Cada cifra lleva su cita [n]. Si una cifra no aparece en la fuente, no la uses.\n"
+          "2. Compara el caso con el límite de la fuente: ¿la temperatura está dentro del rango permitido? "
+          "¿Qué porcentaje del tiempo máximo permitido se consumió?\n"
+          "3. VERDE solo si la temperatura está dentro del rango permitido, una fuente cubre este tipo de producto "
+          "y se consumió menos de la mitad del tiempo permitido (o no hubo excursión).\n"
+          "4. AMARILLO si está dentro del rango pero se consumió la mitad o más del tiempo, o si la fuente cubre "
+          "el producto solo parcialmente (otro formato, otra marca o un producto distinto).\n"
+          "5. ROJO si se supera el rango o el tiempo, hubo congelación, o ninguna fuente cubre el producto.\n"
+          "6. Nunca justifiques un VERDE con 'por conservador'. Si dudas, baja un nivel.\n"
+          "Formato: primera línea 'VEREDICTO: VERDE|AMARILLO|ROJO'; segunda línea "
+          "'Tiempo permitido consumido: X %' o 'no calculable'; luego razones breves con citas e incertidumbre.")
+
 
 def extraer(texto):
     m = re.search(r"VEREDICTO:?\s*\**\s*(VERDE|AMARILLO|ROJO)", texto, re.I)
@@ -40,11 +49,20 @@ texto = r.choices[0].message.content
 print(texto, f"\n({round(time.time()-t0, 1)} s)\n")
 
 v = extraer(texto)
+if v == "VERDE" and not re.search(r"\[\d+\]", texto):
+    v = "AMARILLO"
+    print("Verde sin ninguna fuente citada: lo bajo a AMARILLO.")
 print("Veredicto:", v)
-try:
-    with serial.Serial(PUERTO, 115200, timeout=2) as s:
-        time.sleep(2)
-        s.write(MAPA[v].encode())
-        print("Placa respondió:", s.readline().decode(errors="ignore").strip())
-except Exception as e:
-    print("No pude hablar con la placa:", e)
+puertos = [p.strip() for p in os.getenv("COM_PORTS", "COM7").split(",") if p.strip()]
+print("Puertos que voy a usar:", puertos)
+for puerto in puertos:
+    try:
+        with serial.Serial(puerto, 115200, timeout=3) as s:
+            time.sleep(3)              # el Uno clásico se reinicia al abrir el puerto
+            s.reset_input_buffer()
+            s.write(MAPA[v].encode())
+            s.flush()
+            resp = s.readline().decode(errors="ignore").strip()
+            print(f"{puerto}: {'OK -> ' + resp if resp else 'sin respuesta de la placa'}")
+    except Exception as e:
+        print(f"{puerto}: ERROR -> {e}")

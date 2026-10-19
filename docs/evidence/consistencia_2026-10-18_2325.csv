@@ -1,0 +1,25 @@
+producto,temp_c,horas,esperado,corrida,veredicto,segundos,tokens_in,tokens_out
+pluma de insulina sin abrir,5,0,VERDE,1,VERDE,8.4,1845,3034
+pluma de insulina sin abrir,5,0,VERDE,2,VERDE,7.0,1845,2624
+pluma de insulina sin abrir,5,0,VERDE,3,VERDE,3.6,1845,1233
+pluma de insulina sin abrir,28,3,?,1,VERDE,2.1,1846,615
+pluma de insulina sin abrir,28,3,?,2,VERDE,2.0,1846,672
+pluma de insulina sin abrir,28,3,?,3,VERDE,2.2,1846,699
+pluma de insulina sin abrir,45,6,NO_VERDE,1,ROJO,1.7,1846,487
+pluma de insulina sin abrir,45,6,NO_VERDE,2,ROJO,3.2,1846,1050
+pluma de insulina sin abrir,45,6,NO_VERDE,3,ROJO,1.8,1846,493
+leche pasteurizada sin abrir,4,0,VERDE,1,ROJO,6.7,1751,2484
+leche pasteurizada sin abrir,4,0,VERDE,2,ROJO,5.8,1751,2204
+leche pasteurizada sin abrir,4,0,VERDE,3,ROJO,11.4,1751,4064
+leche pasteurizada sin abrir,28,3,NO_VERDE,1,ROJO,3.8,1892,1324
+leche pasteurizada sin abrir,28,3,NO_VERDE,2,AMARILLO,4.4,1892,1454
+leche pasteurizada sin abrir,28,3,NO_VERDE,3,ROJO,7.0,1892,2476
+vacuna contra la influenza,5,0,VERDE,1,VERDE,2.7,1684,925
+vacuna contra la influenza,5,0,VERDE,2,VERDE,2.7,1684,919
+vacuna contra la influenza,5,0,VERDE,3,VERDE,2.9,1684,995
+vacuna contra la influenza,28,3,NO_VERDE,1,ROJO,2.7,1593,856
+vacuna contra la influenza,28,3,NO_VERDE,2,ROJO,2.4,1593,801
+vacuna contra la influenza,28,3,NO_VERDE,3,ROJO,1.8,1593,611
+medicamento Zorbex-9 inventado,28,3,NO_VERDE,1,ROJO,3.0,1584,941
+medicamento Zorbex-9 inventado,28,3,NO_VERDE,2,ROJO,1.9,1584,550
+medicamento Zorbex-9 inventado,28,3,NO_VERDE,3,ROJO,2.8,1584,843

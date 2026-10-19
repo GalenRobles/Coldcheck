@@ -1,0 +1,21 @@
+producto,temp_c,horas,esperado,corrida,veredicto,segundos,tokens_in,tokens_out
+pluma de insulina sin abrir,25,24,VERDE,1,VERDE,5.9,2022,2080
+pluma de insulina sin abrir,25,24,VERDE,2,VERDE,3.9,2022,1395
+pluma de insulina sin abrir,25,24,VERDE,3,VERDE,3.0,2022,984
+pluma de insulina sin abrir,25,24,VERDE,4,VERDE,3.8,2022,1356
+pluma de insulina sin abrir,25,24,VERDE,5,VERDE,2.7,2022,882
+pluma de insulina sin abrir,32,4,?,1,VERDE,4.0,1962,1384
+pluma de insulina sin abrir,32,4,?,2,AMARILLO,11.1,1962,4012
+pluma de insulina sin abrir,32,4,?,3,AMARILLO,5.0,1962,1787
+pluma de insulina sin abrir,32,4,?,4,AMARILLO,11.2,1962,4212
+pluma de insulina sin abrir,32,4,?,5,VERDE,4.6,1962,1638
+pluma de insulina sin abrir,-5,4,NO_VERDE,1,ROJO,1.0,2020,277
+pluma de insulina sin abrir,-5,4,NO_VERDE,2,ROJO,1.2,2020,366
+pluma de insulina sin abrir,-5,4,NO_VERDE,3,ROJO,1.0,2020,277
+pluma de insulina sin abrir,-5,4,NO_VERDE,4,ROJO,1.2,2020,361
+pluma de insulina sin abrir,-5,4,NO_VERDE,5,ROJO,1.2,2020,316
+pluma de insulina sin abrir,27,624,?,1,ROJO,1.8,1911,516
+pluma de insulina sin abrir,27,624,?,2,ROJO,1.6,1911,501
+pluma de insulina sin abrir,27,624,?,3,ROJO,2.2,1911,567
+pluma de insulina sin abrir,27,624,?,4,ROJO,1.8,1911,498
+pluma de insulina sin abrir,27,624,?,5,ROJO,1.7,1911,453
