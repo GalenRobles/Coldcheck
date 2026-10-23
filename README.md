@@ -73,7 +73,7 @@ archive/              earlier versions kept for reference
 Requirements: Python 3.12+, both boards on USB, a Nebius Token Factory key and a Tavily key.
 
 ```powershell
-git clone https://github.com/<your-user>/coldcheck.git
+git clone https://github.com/GalenRobles/coldcheck.git
 cd coldcheck
 python -m venv .venv
 .venv\Scripts\Activate.ps1
