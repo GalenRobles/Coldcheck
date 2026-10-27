@@ -11,9 +11,9 @@
 
 | Verified on hardware | Implemented, not yet verified on hardware | Not built yet |
 |---|---|---|
-| Traffic light + buzzer driven by serial letters (Arduino Uno) | Live loop `demo_vivo.py`: real temperature -> accumulated exposure -> verdict -> both boards (tested only with a simulated serial port) | Web dashboard and replay mode |
+| Traffic light + buzzer driven by serial letters (Arduino Uno) | Live loop `demo_vivo.py`: real temperature -> accumulated exposure -> verdict -> both boards (tested only with a simulated serial port) | Hosted demo URL (not required for Physical AI) |
 | LED matrix shows the verdict letter (Arduino UNO Q) | Sensor calibration with an ice bath | Door-open detection (ultrasonic) |
-| NTC 10K temperature readout over serial (stable 19.5-19.6 C in a 20 s test) | | Product selection with the keypad |
+| NTC 10K temperature readout over serial (stable 19.5-19.6 C in a 20 s test) | Local web panel `panel.py` (live view and replay): server and page logic tested with simulated data, not yet opened in a browser with the boards | Product selection with the keypad |
 | Tavily search -> Nemotron rule extraction -> code verification -> verdict, with real API calls | | Triage tier with Nemotron Super |
 
 ## How it works
@@ -39,6 +39,10 @@
   RED only if it exceeds all of them or no rule can be verified;
   YELLOW if the sources disagree or half of the time or more is used.
 - A rule that cannot be verified against its source is discarded. No verifiable evidence means RED.
+- Applicability gate: a rule only counts if its quote (or its source title) names the product and does not name a different variant
+  (for example breast milk or UHT milk for pasteurized milk). The catalog covers three products: insulin pen, influenza vaccine and
+  pasteurized milk. Any other product is RED as unsupported, without calling a model.
+- Temperatures are verified with their unit: a quote must show the number followed by C or F, so 86 F cannot pass as 86 C.
 - If the sensor fails 3 readings in a row, the result is RED.
 
 **Models:** Nemotron Nano extracts the rules; Nemotron Ultra is used only when Nano's output cannot be verified. Nemotron Super is not used yet.
@@ -51,6 +55,7 @@
 nucleo.py             extraction, verification and decision logic
 demo.py               one-shot verdict (typed temperature and hours), optional boards
 demo_vivo.py          live demo with the real sensor
+panel.py              local web panel: live view and replay of recorded sessions
 evals/consistencia.py repeats cases and writes CSV evidence to docs/evidence/
 evals/prueba_tavily.py   first with/without-search comparison
 tools/                hardware helpers (read temperature, test the traffic light)
@@ -73,7 +78,7 @@ archive/              earlier versions kept for reference
 Requirements: Python 3.12+, both boards on USB, a Nebius Token Factory key and a Tavily key.
 
 ```powershell
-git clone https://github.com/GalenRobles/coldcheck.git
+git clone https://github.com/<your-user>/coldcheck.git
 cd coldcheck
 python -m venv .venv
 .venv\Scripts\Activate.ps1
@@ -90,6 +95,8 @@ python demo.py --sin-placas                 # verdict only, no boards
 python demo.py                              # verdict + letters to the boards
 python tools/leer_temp.py COM8 20           # check the temperature readout
 python demo_vivo.py --acel 28800            # live demo: 1 real second = 8 simulated hours
+python demo_vivo.py --panel --acel 28800    # same, plus the web panel at http://127.0.0.1:8000
+python panel.py --replay docs/evidence/sesion_YYYY-MM-DD_HHMM.jsonl   # replay a recorded session, no boards needed
 python evals/consistencia.py 3              # repeat every case 3 times, write CSV evidence
 ```
 
@@ -112,7 +119,7 @@ The later iterations (per-rule evaluation, unit conversion in code, duration ver
 | It refuses to invent safety for an unknown product | That it works for brands, lots or formats it has not been tested on |
 | Decisions after setup take no model calls | Real-time guarantees for the LLM step: hard limits belong in firmware |
 
-Other limits: search results can be off-topic; rule verification checks that the quote exists and contains the numbers, not that the rule applies to the exact product; sensor accuracy depends on calibration (ice-bath check pending).
+Other limits: the product catalog is curated by hand and covers only three products; search results can be off-topic; rule verification checks that the quote exists, contains the numbers with their units and names the product, but it cannot confirm that the rule applies to the exact brand, lot or format; sensor accuracy depends on calibration (ice-bath check pending).
 
 ## Models and tools
 
